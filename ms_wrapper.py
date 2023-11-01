@@ -13,11 +13,11 @@ from modelscope.pipelines.builder import PIPELINES
 from modelscope.preprocessors.builder import PREPROCESSORS
 from modelscope.models.builder import MODELS
 
-from rex.data_utils import data_loader, token_config
-from rex.arguments import get_args, DataArguments, UIEArguments
-from rex.model.model import RexModel
-from rex.Trainer.trainer import RexModelTrainer
-from rex.Trainer.utils import compute_metrics
+from .rex.data_utils import data_loader, token_config
+from .rex.arguments import get_args, DataArguments, UIEArguments
+from .rex.model.model import RexModel
+from .rex.Trainer.trainer import RexModelTrainer
+from .rex.Trainer.utils import compute_metrics
 
 @PIPELINES.register_module('rex-uninlu', module_name='nlp_deberta_rex-uninlu_chinese-base-pipe')
 class RexUniNLUPipeline(Pipeline):
