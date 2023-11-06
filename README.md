@@ -1,7 +1,7 @@
 ---
 tasks:
-- siamese-uie
 - rex-uninlu
+- siamese-uie
 - text-classification
 - zero-shot-classification
 - question-answering
@@ -151,8 +151,6 @@ widgets:
       memory: 4000 #单位MB
       gpu: 0 #GPU数量
       gpu_memory: 16000 #单位MB
----
-license: Apache License 2.0
 ---
 
 > 这一年大模型的工作如火如荼，越来越少的人关注小模型的发展了，但是大模型真的是万能的吗？很显然，至少目前为止，答案是否定的。这篇博客会介绍我们被EMNLP录用的一篇工作
