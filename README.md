@@ -46,8 +46,7 @@ datasets:
   - damo/people_daily_ner_1998_tiny
   - damo/absa_aoe
 widgets:
-  - task: siamese-uie
-    model_revision: v1.0
+  - task: rex-uninlu
     inputs:
       - type: text #可选值：text|image|video|audio
         name: input #要跟pipeline代码中的input支持的key一致，可省略
