@@ -1,7 +1,7 @@
-datasets==2.13.0
-jsonlines==3.1.0
-numpy==1.21.6
-pandas==1.5.1
-tokenizers==0.12.1
-tqdm==4.64.1
+datasets
+jsonlines
+numpy
+pandas
+tokenizers
+tqdm
 transformers==4.33.0
