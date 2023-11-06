@@ -24,10 +24,10 @@ class RexUniNLUPipeline(Pipeline):
 
     def __init__(self, model, preprocessor=None, **kwargs):
         super().__init__(model=model, auto_collate=False)
+        self.model_dir = model
         self.model, self.trainer = self.init_model(**kwargs)
     
     def init_model(self, **kwargs):
-        self.model_dir = 'damo/nlp_deberta_rex-uninlu_chinese-base'
         data_args, training_args, model_args = get_args()
         training_args.bert_model_dir = self.model_dir
         training_args.load_checkpoint = self.model_dir
