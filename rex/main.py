@@ -10,13 +10,13 @@ import jsonlines
 import torch
 import torch.distributed as dist
 
-from .data_utils import data_loader, token_config
-from .arguments import get_args, DataArguments, UIEArguments
-from .model.model import RexModel
+from data_utils import data_loader, token_config
+from arguments import get_args, DataArguments, UIEArguments
+from model.model import RexModel
 from time import time
 # from model.USM import Model
-from .Trainer.trainer import RexModelTrainer
-from .Trainer.utils import compute_metrics
+from Trainer.trainer import RexModelTrainer
+from Trainer.utils import compute_metrics
 
 def main():
     data_args, training_args, model_args = get_args()
