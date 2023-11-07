@@ -153,17 +153,16 @@ widgets:
       gpu_memory: 16000 #单位MB
 ---
 
-> 这一年大模型的工作如火如荼，越来越少的人关注小模型的发展了，但是大模型真的是万能的吗？很显然，至少目前为止，答案是否定的。这篇博客会介绍我们被EMNLP录用的一篇工作
-《RexUIE: A Recursive Method with Explicit Schema Instructor for Universal Information Extraction》
-。这篇工作提出了一套真正的UIE框架，并探讨了小模型在低资源IE下的表现，同时我们也将该框架拓展到了多模态（mRex）、通用自然语言理解（RexUniNLU）等多个领域，探索了多模态、多语言、多任务的所有自然语言理解问题，希望可以给读者们带来一些在大模型时代，如何做小模型的insight。
-
-# 模型描述
-## RexPrompt的背景
 在去年年底，我们团队根据友商开源的DuUIE性能的不足，提出了一套基于SiamesePrompt的通用自然语言理解框架，在速度提升30%的同时，F1 Score提升了25%，同时可以支持任意元组数量的抽取。
 
-然而，当我们深入思考DuUIE和SiamesPrompt后，这两套框架都有同一个问题：由于需要逐个遍历每个schema，计算复杂度和Schema的复杂度成正比。显然，当一个任务的schema比较复杂时，这个计算成本就显得不太可接受了。为了解决这个问题，我们提出了RexPrompt通用自然语言理解框架。
+然而，当我们深入思考DuUIE和SiamesPrompt后，这两套框架都有同一个问题：由于需要逐个遍历每个schema，计算复杂度和Schema的复杂度成正比。显然，当一个任务的schema比较复杂时，这个计算成本就显得不太可接受了。为了解决这个问题，我们提出了RexPrompt通用自然语言理解框架。经过实验，我们发现**RexPrompt的推理速度是SiamesePrompt框架的3倍，同时F1 Score又提升了10%！**
 
-经过实验，我们发现**RexPrompt的推理速度是SiamesePrompt框架的3倍，同时F1 Score又提升了10%！**
+同时，这个工作提出了一套真正的UIE框架，并探讨了小模型在低资源IE下的表现，同时我们也将该框架拓展到了多模态（mRex）、通用自然语言理解（RexUniNLU）等多个领域，探索了多模态、多语言、多任务的所有自然语言理解问题，希望可以给读者们带来一些在大模型时代，如何做小模型的insight。
+
+这个工作在EMNLP2023被录用：《RexUIE: A Recursive Method with Explicit Schema Instructor for Universal Information Extraction》
+
+# 模型描述
+
 
 ## 如何实现RexPrompt
 RexPrompt框架的中文解释是“一种基于显式图式指导器的递归方法”，在这个框架中，我们将schema处的prompt进行了并行处理，同时利用了prompts isolation的方式，缓解了schema顺序对于抽取效果的影响，同时由于递归方式的存在，RexPrompt和SiamesePrompt一样可以实现任意元组的抽取。

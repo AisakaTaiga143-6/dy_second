@@ -1,7 +1,0 @@
-datasets
-jsonlines
-numpy
-pandas
-tokenizers
-tqdm
-transformers==4.33.0
