@@ -159,7 +159,7 @@ widgets:
 
 同时，这个工作提出了一套真正的UIE框架，并探讨了小模型在低资源IE下的表现，同时我们也将该框架拓展到了多模态（mRex）、通用自然语言理解（RexUniNLU）等多个领域，探索了多模态、多语言、多任务的所有自然语言理解问题，希望可以给读者们带来一些在大模型时代，如何做小模型的insight。
 
-很高兴这个工作也在EMNLP2023被录用：《RexUIE: A Recursive Method with Explicit Schema Instructor for Universal Information Extraction》
+很高兴这个工作也在EMNLP2023被录用：[《RexUIE: A Recursive Method with Explicit Schema Instructor for Universal Information Extraction》](https://arxiv.org/abs/2304.14770)
 
 # 模型描述
 
