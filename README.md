@@ -153,7 +153,7 @@ widgets:
       gpu_memory: 16000 #单位MB
 ---
 
-在去年年底，我们团队根据开源模型DuUIE推理性能不足的问题，提出了一套基于SiamesePrompt的通用自然语言理解框架，在速度提升30%的同时，F1 Score提升了25%，同时可以支持任意元组数量的抽取。
+在去年年底，我们团队根据开源模型DuUIE推理性能不足的问题，提出了一套基于[SiamesePrompt](https://modelscope.cn/models/damo/nlp_structbert_siamese-uninlu_chinese-base/summary)的通用自然语言理解框架，在速度提升30%的同时，F1 Score提升了25%，同时可以支持任意元组数量的抽取。
 
 然而，当我们深入思考DuUIE和SiamesPrompt后，这两套框架都有同一个问题：由于需要逐个遍历每个schema，计算复杂度和Schema的复杂度成正比。显然，当一个任务的schema比较复杂时，这个计算成本就显得不太可接受了。为了解决这个问题，我们提出了RexPrompt通用自然语言理解框架。经过实验，我们发现**RexPrompt的推理速度是SiamesePrompt框架的3倍，同时F1 Score又提升了10%！**
 
