@@ -398,7 +398,7 @@ pip install -r reqs.txt
 
 ![](imgs/uninlu-exp-3.png)
 
-# 参考文献
+# 相关论文以及引用信息
 
 ```bib
 @article{Liu2023RexUIEAR,
