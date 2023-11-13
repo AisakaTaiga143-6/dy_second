@@ -398,4 +398,21 @@ pip install -r reqs.txt
 
 ![](imgs/uninlu-exp-3.png)
 
+# 参考文献
 
+```bib
+@article{Liu2023RexUIEAR,
+  title={RexUIE: A Recursive Method with Explicit Schema Instructor for Universal Information Extraction},
+  author={Chengyuan Liu and Fubang Zhao and Yangyang Kang and Jingyuan Zhang and Xiang Zhou and Changlong Sun and Fei Wu and Kun Kuang},
+  journal={ArXiv},
+  year={2023},
+  volume={abs/2304.14770},
+  url={https://api.semanticscholar.org/CorpusID:258417913}
+}
+@inproceedings{Zhao2021AdjacencyLO,
+  title={Adjacency List Oriented Relational Fact Extraction via Adaptive Multi-task Learning},
+  author={Fubang Zhao and Zhuoren Jiang and Yangyang Kang and Changlong Sun and Xiaozhong Liu},
+  booktitle={FINDINGS},
+  year={2021}
+}
+```
