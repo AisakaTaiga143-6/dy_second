@@ -104,5 +104,5 @@ class UIEArguments(TrainingArguments):
 
 def get_args() -> Tuple[DataArguments, UIEArguments, ModelArguments]:
     parser = HfArgumentParser((DataArguments, UIEArguments, ModelArguments))
-    data_args, training_args, model_args = parser.parse_args_into_dataclasses()
+    data_args, training_args, model_args, remaining_args = parser.parse_args_into_dataclasses(return_remaining_strings=True)
     return data_args, training_args, model_args
