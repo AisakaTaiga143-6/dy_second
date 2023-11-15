@@ -207,7 +207,7 @@ pip install modelscope
 from modelscope.pipelines import pipeline
 from modelscope.utils.constant import Tasks
 
-semantic_cls = pipeline('rex-uninlu', model='damo/nlp_deberta_rex-uninlu_chinese-base', model_revision='v1.0.4')
+semantic_cls = pipeline('rex-uninlu', model='damo/nlp_deberta_rex-uninlu_chinese-base', model_revision='v1.1.0')
 
 # 命名实体识别 {实体类型: None}
 semantic_cls(
