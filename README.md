@@ -58,15 +58,15 @@ widgets:
         validator: 
           max_words: 300
     output:
-        displayType: Text
-        displayProps:
+      displayType: Text
+      displayProps:
         arrayParser: json
-        displayValueMapping: output
+      displayValueMapping: output
     inferencespec:
-        cpu: 2 #CPU数量
-        memory: 4000 #单位MB
-        gpu: 0 #GPU数量
-        gpu_memory: 16000 #单位MB
+      cpu: 2 #CPU数量
+      memory: 4000 #单位MB
+      gpu: 0 #GPU数量
+      gpu_memory: 16000 #单位MB
     parameters:
       - name: schema #参数名，要跟pipeline代码中的kwargs支持的key一致
         title: Schema #用于前端显示，如果不写会使用name来显示
