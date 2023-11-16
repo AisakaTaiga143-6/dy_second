@@ -46,13 +46,27 @@ datasets:
   - damo/people_daily_ner_1998_tiny
   - damo/absa_aoe
 widgets:
-  - task: rex-uninlu
+  - enable: true
+    version: 1
+    task: rex-uninlu
+    model_revision: v1.2.1
     inputs:
       - type: text #可选值：text|image|video|audio
         name: input #要跟pipeline代码中的input支持的key一致，可省略
         title: #用于前端显示，如果不填会用name来显示
+        displayType: TextArea
         validator: 
-          max_words: 300 
+          max_words: 300
+    output:
+      displayType: Text
+      displayProps:
+      arrayParser: json
+      displayValueMapping: output
+    inferencespec:
+      cpu: 2 #CPU数量
+      memory: 4000 #单位MB
+      gpu: 0 #GPU数量
+      gpu_memory: 16000 #单位MB
     parameters:
       - name: schema #参数名，要跟pipeline代码中的kwargs支持的key一致
         title: Schema #用于前端显示，如果不写会使用name来显示
@@ -130,11 +144,6 @@ widgets:
         parameters:
           - name: schema
             value: '{"APP系统功能": {"蓝牙钥匙故障": null, "界面显示异常": null, "数据显示不准确": null, "远程控制故障": null}, "电器-附件": {"电子模块问题": null, "雨刮、洗涤器故障": null, "防盗报警系统": null, "定速巡航系统": null}}'
-    inferencespec:
-      cpu: 2 #CPU数量
-      memory: 4000 #单位MB
-      gpu: 0 #GPU数量
-      gpu_memory: 16000 #单位MB
 ---
 
 在去年年底，我们团队根据开源模型DuUIE推理性能不足的问题，提出了一套基于[SiamesePrompt](https://modelscope.cn/models/damo/nlp_structbert_siamese-uninlu_chinese-base/summary)的通用自然语言理解框架，在速度提升30%的同时，F1 Score提升了25%，同时可以支持任意元组数量的抽取。
