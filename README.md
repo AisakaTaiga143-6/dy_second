@@ -58,12 +58,12 @@ widgets:
         validator: 
           max_words: 300
     output:
-      - displayType: Text
+        displayType: Text
         displayProps:
         arrayParser: json
         displayValueMapping: output
     inferencespec:
-      - cpu: 2 #CPU数量
+        cpu: 2 #CPU数量
         memory: 4000 #单位MB
         gpu: 0 #GPU数量
         gpu_memory: 16000 #单位MB
