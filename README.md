@@ -73,7 +73,7 @@ widgets:
         type: string #可选值：enum|string|int，enum需要提供values
     examples:
       - name: 1
-        title: 示例2 
+        title: 示例1
         inputs:
           - name: input
             data: '1944年毕业于北大的名古屋铁道会长谷口清太郎等人在日本积极筹资，共筹款2.7亿日元，参加捐款的日本企业有69家。'
@@ -81,7 +81,7 @@ widgets:
           - name: schema
             value: '{"人物": null, "地理位置": null, "组织机构": null}'
       - name: 2
-        title: 示例1 
+        title: 示例2
         inputs:
           - name: input
             data: '很满意，音质很好，发货速度快，值得购买'
@@ -97,7 +97,7 @@ widgets:
           - name: schema
             value: '{"人物": {"比赛项目(赛事名称)": null, "参赛地点(城市)": null, "获奖时间(时间)": null, "选手国籍(国籍)": null}}'
       - name: 4
-        title: 示例3
+        title: 示例4
         inputs:
           - name: input
             data: '7月28日，天津泰达在德比战中以0-1负于天津天海。'
