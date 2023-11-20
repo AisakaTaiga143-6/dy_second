@@ -46,7 +46,7 @@ datasets:
   - damo/people_daily_ner_1998_tiny
   - damo/absa_aoe
 widgets:
-  - enable: false
+  - enable: true
     version: 1
     task: rex-uninlu
     model_revision: v1.2.1
