@@ -401,7 +401,7 @@ pip install -r reqs.txt
 
 ![](imgs/uninlu2.png)
 
-在包涵了实体抽取、关系抽取、事件抽取、属性情感抽取、指代消解、情感分类、文本分类、文本匹配、自然语言推理和阅读理解的10类任务17个测评数据集上（共计数万测试样本），RexUniNLU base和large模型各资源场景学习能力均显著高于前作SiameseUniNLU：
+在包涵了实体抽取、关系抽取、事件抽取、属性情感抽取、指代消解、情感分类、文本分类、文本匹配、自然语言推理和阅读理解的10类任务17个测评数据集上（总计数十万训练及测试样本），RexUniNLU base和large模型各资源场景学习能力均显著高于前作SiameseUniNLU：
 
 ![](imgs/uninlu-exp-1.png)
 
