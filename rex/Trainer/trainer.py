@@ -317,6 +317,31 @@ class RexModelTrainer(Trainer):
                 text = inputs['text']
                 legal_output_type_list = self.get_legal_output_type_list(inputs)
                 self.prompt_loop(model, text, {(): schema}, pred_info_list, legal_output_type_list)
+        
+        if not pred_info_list and (self.tokenizer.additional_special_tokens[2] in text or self.tokenizer.additional_special_tokens[3] in text):
+            with self.compute_loss_context_manager():
+                schema = inputs['schema']
+                text = inputs['text']
+                legal_output_type_list = self.get_legal_output_type_list(inputs)
+                self.prompt_loop(model, text, {(): schema}, pred_info_list, legal_output_type_list, True)
+        if self.tokenizer.additional_special_tokens[2] in text and pred_info_list:
+            # cls
+            keys_prob = [sum([item['confidence'] for item in items])/len(items) for items in pred_info_list]
+            max_idx = keys_prob.index(max(keys_prob))
+            pred_info_list = pred_info_list[max_idx]
+            for item in pred_info_list:
+                item.pop('confidence')
+            pred_info_list = [pred_info_list]
+        if self.tokenizer.additional_special_tokens[3] in text and pred_info_list:
+            # multi_cls
+            keys_prob = [sum([item['confidence'] for item in items])/len(items) for items in pred_info_list]
+            keys_idx = [i for i,v in enumerate(keys_prob) if v > 0.9]
+            if not keys_idx:
+                keys_idx = [keys_prob.index(max(keys_prob))]
+            pred_info_list = [items for i, items in enumerate(pred_info_list) if i in keys_idx]
+            for items in pred_info_list:
+                for item in items:
+                    item.pop('confidence')
         if do_pred:
             return pred_info_list
         else:
@@ -340,7 +365,7 @@ class RexModelTrainer(Trainer):
             legal_output_type_list.add(tuple(x))
         return legal_output_type_list
 
-    def prompt_loop(self, model, text, level_hint_map, pred_info_list, legal_output_type_list):
+    def prompt_loop(self, model, text, level_hint_map, pred_info_list, legal_output_type_list, blank=False):
         rex_dl = self.rex_dl
         level_hint_char_map, level_hints = rex_dl.split_hint_by_level(level_hint_map)
         next_level_hint_map = {}
@@ -462,7 +487,8 @@ class RexModelTrainer(Trainer):
                     rows = rows.tolist()
                     cols = cols.tolist()
                     decay_rate = 1 ** j
-                    next_level_hint_map_ = self.infer_cls_info_from_prediction(
+                    if blank:
+                        next_level_hint_map_ = self.infer_cls_info_from_prediction_for_blank(
                         rows, cols, probs, pred_info, decay_rate, cls_token,
                         input_ids,
                         token_type_ids,
@@ -472,32 +498,43 @@ class RexModelTrainer(Trainer):
                         level_hint_map,
                         legal_output_type_list
                     )
+                    else:
+                        next_level_hint_map_ = self.infer_cls_info_from_prediction(
+                            rows, cols, probs, pred_info, decay_rate, cls_token,
+                            input_ids,
+                            token_type_ids,
+                            text,
+                            offset_mapping,
+                            level_split_hint_char_map,
+                            level_hint_map,
+                            legal_output_type_list
+                        )
                     next_level_hint_map.update(next_level_hint_map_)
                 
                 if data_type == 'cls':
                     if len(pred_info) == 1:
                         key = list(pred_info.keys())[0]
-                        pred_info_cands.append((key, sum([item['confidence'] for item in pred_info[key][0]])))
+                        pred_info_cands.append((key, [item['confidence'] for item in pred_info[key][0]]))
                     elif len(pred_info) > 1:
                         prob_sum = {}
-                        for key in pred_info:
-                            prob_sum[key] = [sum([item['confidence'] for item in items]) for items in pred_info[key]][0]
-                        prob_sum = sorted(prob_sum.items(), key=lambda x: x[1], reverse=True)
+                        for keys in pred_info:
+                            keys_prob = [[item['confidence'] for item in items] for items in pred_info[keys]]
+                            prob_sum[keys] = [sum(col)/len(col) for col in zip(*keys_prob)]
+                        prob_sum = sorted(prob_sum.items(), key=lambda x: sum(x[1]), reverse=True)
                         pred_info_cands.append((prob_sum[0][0], prob_sum[0][1]))
                 elif data_type == 'multi_cls':
                     for keys in pred_info:
-                        keys = keys.split('[INFOKEY]')
+                        keys_list = keys.split('[INFOKEY]')
                         info_list = []
-                        for key in keys:
-                            info_list.append({'type': key, 'span': cls_token, 'offset': [0, len(cls_token)]})
+                        for i, key in enumerate(keys_list):
+                            info_list.append({'type': key, 'span': cls_token, 'offset': [0, len(cls_token)], 'confidence': pred_info[keys][0][i]['confidence']})
                         pred_info_list.append(info_list)
-                
         if data_type == 'cls' and pred_info_cands:
-            pred_info_cands = sorted(pred_info_cands, key=lambda x: x[1], reverse=True)
+            pred_info_cands = sorted(pred_info_cands, key=lambda x: sum(x[1]), reverse=True)
             keys = pred_info_cands[0][0].split('[INFOKEY]')
             info_list = []
-            for key in keys:
-                info_list.append({'type': key, 'span': cls_token, 'offset': [0, len(cls_token)]})
+            for i, key in enumerate(keys):
+                info_list.append({'type': key, 'span': cls_token, 'offset': [0, len(cls_token)], 'confidence': pred_info_cands[0][1][i]})
             pred_info_list.append(info_list)
                 # if len(pred_info) == 1:
                 #     pred_info_list.append([{'type': list(pred_info.keys())[0], 'span': cls_token, 'offset': [0, len(cls_token)]}])
@@ -522,7 +559,7 @@ class RexModelTrainer(Trainer):
                     
         if len(next_level_hint_map) == 0:
             return
-        self.prompt_loop(model, text, next_level_hint_map, pred_info_list, legal_output_type_list)
+        self.prompt_loop(model, text, next_level_hint_map, pred_info_list, legal_output_type_list, blank)
 
 
     def infer_info_from_prediction(
@@ -691,4 +728,91 @@ class RexModelTrainer(Trainer):
                             pred_info[info_key].append(info_value)
                     except:
                         continue
+        return next_level_hint_map
+    
+    def infer_cls_info_from_prediction_for_blank(
+        self, 
+        rows, cols, probs, pred_info, decay_rate, cls_token,
+        input_ids: List, 
+        token_type_ids: List,
+        text: str,
+        offset_mapping,
+        level_split_hint_char_map,
+        level_hint_map,
+        legal_output_type_list
+    ) -> Tuple[Any, List[Dict[str, Any]]]:
+        next_level_hint_map = {}
+        pred_info_list = []
+        num_tokens = len(input_ids)
+        num_hint_tokens = sum([int(x == 0) for x in token_type_ids])
+        # if self.debug:
+        #     print('num_hint_tokens', num_hint_tokens)
+        char_index_to_token_index_map = {}
+        for i in range(num_hint_tokens, num_tokens):
+            offset = offset_mapping[i]
+            for j in range(offset[0], offset[1]):
+                char_index_to_token_index_map[j] = i
+        level_split_hint_token_map = {}
+        hint_char_index_to_token_index_map = {}
+        for i in range(num_hint_tokens):
+            offset = offset_mapping[i]
+            hint_char_index_to_token_index_map[offset[0]] = i
+        for x in level_split_hint_char_map:
+            level_split_hint_token_map[x] = hint_char_index_to_token_index_map[level_split_hint_char_map[x]]
+        token_index_hint_map = {v: k for k, v in level_split_hint_token_map.items()}
+
+        hint_head_map = defaultdict(list)
+        hint_tail_map = defaultdict(list)
+        hint_head_probs = defaultdict(dict)
+        hint_tail_probs = defaultdict(dict)           
+        
+        types_pos = [i for i, x in enumerate(input_ids) if x == self.tokenizer.additional_special_tokens_ids[1]]
+        num_hint_tokens_list = [num_hint_tokens] * len(types_pos)
+        rows = [num_hint_tokens] * len(types_pos) + types_pos
+        cols = types_pos + [num_hint_tokens] * len(types_pos)
+        for j, i in zip(rows, cols):
+            if i < num_hint_tokens and j >= num_hint_tokens:
+                if i in token_index_hint_map:
+                    x = token_index_hint_map[i]
+                    hint_head_map[x].append(j)
+                    hint_head_probs[x][j] = probs[0, i, j]
+            if i >= num_hint_tokens and j < num_hint_tokens:
+                if j in token_index_hint_map:
+                    x = token_index_hint_map[j]
+                    hint_tail_map[x].append(i)
+                    hint_tail_probs[x][i] = probs[0, i, j]
+
+        i, j, span_prob = num_hint_tokens, num_hint_tokens, probs[0, num_hint_tokens, num_hint_tokens]
+        for x in level_split_hint_token_map:
+            if j in hint_head_map[x] and i in hint_tail_map[x]:
+                try:
+                    prefix_tuple, ent_type = x
+                    char_head = offset_mapping[j][0]
+                    char_tail = offset_mapping[i][1]
+                    head_prob = hint_head_probs[x][j]
+                    tail_prob = hint_tail_probs[x][i]
+                    while text[char_head] == ' ':
+                        char_head += 1
+                    if level_hint_map[prefix_tuple][ent_type]:
+                        key = prefix_tuple+((ent_type, text[char_head: char_tail], tuple([char_head, char_tail]), round((decay_rate * (span_prob + head_prob + tail_prob)/3).item(), 4)),)
+                        next_level_hint_map[key] = level_hint_map[prefix_tuple][ent_type]
+                    info_key = [tmp[0].strip() for tmp in prefix_tuple if tmp[1] == cls_token]
+                    info_value = [{'type': tmp[0].strip(), 'span': tmp[1], 'offset': list(tmp[2]), 'confidence': tmp[3]} for tmp in prefix_tuple if tmp[1] == cls_token]
+                    info_key += [
+                        ent_type
+                    ]
+                    info_key = '[INFOKEY]'.join(info_key)
+                    info_value += [
+                        {
+                            'type': ent_type,
+                            'span': text[char_head: char_tail],
+                            'offset': [char_head, char_tail],
+                            'confidence': round((decay_rate * (span_prob + head_prob + tail_prob)/3).item(), 4)
+                        }
+                    ]
+                    if tuple([tmp['type'] for tmp in info_value]) in legal_output_type_list and text[char_head: char_tail] == cls_token:
+                        pred_info[info_key].append(info_value)
+                except:
+                    continue
+            
         return next_level_hint_map
