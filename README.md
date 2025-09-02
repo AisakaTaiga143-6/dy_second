@@ -49,7 +49,7 @@ widgets:
   - enable: true
     version: 1
     task: rex-uninlu
-    model_revision: v1.2.1
+    model_revision: v1.2.2
     inputs:
       - type: text #可选值：text|image|video|audio
         name: input #要跟pipeline代码中的input支持的key一致，可省略
