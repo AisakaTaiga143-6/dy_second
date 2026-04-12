@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+log/**
+!log/
+!log/hier_cls_exp1/
+!log/hier_cls_exp1/**
+
+# 再次忽略中间 checkpoint
+log/hier_cls_exp1/checkpoint-*/
