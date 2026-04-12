@@ -64,7 +64,7 @@ class DataArguments():
     stride_len: int = field(default=32)
     max_len: int = field(default=512)
     hint_max_len: int = field(default=256, metadata={"help": "The maximum length of the hint tokens."})
-    negative_sampling_rate: int = field(default=1, metadata={"help": "The rate of negative sampling."})
+    negative_sampling_rate: float = field(default=1.0, metadata={"help": "The rate of negative sampling (0~1)."})
     data_path: str = field(default='', metadata={"help": "The path to the data."})
     prefix_string_max_len: int = field(default=125)
     info_type_max_len: int = field(default=125)

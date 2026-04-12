@@ -66,12 +66,12 @@ class UIEDataLoader(object):
         data_fp = f'{self.data_dir}/{file_path}'
         logger.info(f'Loading data from {data_fp}')
         if self.no_cuda:
-            with open(data_fp) as f:
+            with open(data_fp, encoding="utf-8") as f:
                 for num_line, line in enumerate(f):
                     raw_sample = json.loads(line)
                     raw_data.append(raw_sample)
         else:
-            with open(data_fp) as f:
+            with open(data_fp, encoding="utf-8") as f:
                 for num_line, line in enumerate(f):
                     if num_line % self.world_size != rank:
                         continue
@@ -111,8 +111,8 @@ class UIEDataLoader(object):
 
     def tokenize_data(self, data_fp, tokenized_data_fp=None):
         logger.info(f'Tokenizing data and dump to {tokenized_data_fp}')
-        with open(data_fp, "r") as f:
-            with open(f"{tokenized_data_fp}_{self.rank}", "w") as fo:
+        with open(data_fp, "r", encoding="utf-8") as f:
+            with open(f"{tokenized_data_fp}_{self.rank}", "w", encoding="utf-8") as fo:
                 for sample_id, line in enumerate(f):
                     if self.rank != -1 and sample_id % self.world_size != self.rank:
                         continue
@@ -314,10 +314,10 @@ class UIEDataLoader(object):
             dist.barrier()
         if self.rank == 0 or self.rank == -1:
             logger.info('Merging tokenized data from each process !')
-            with open(tokenized_data_fp, 'w') as fo:
+            with open(tokenized_data_fp, 'w', encoding='utf-8') as fo:
                 for i in range(self.world_size):
                     from_p = f'{tokenized_data_fp}_{i}' if self.rank >= 0 else f'{tokenized_data_fp}_{-1}'
-                    with open(from_p) as fi:
+                    with open(from_p, encoding="utf-8") as fi:
                         for line in fi:
                             fo.write(line)
                     os.remove(from_p)

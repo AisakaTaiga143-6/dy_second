@@ -21,7 +21,7 @@ logger = logging.getLogger()
 
 class RexModelTrainer(Trainer):
     
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None, **kwargs):
         """
         How the loss is computed by Trainer. By default, all models return the loss in the first element.
 

@@ -1,0 +1,38 @@
+2026/04/11 22:50:32 - root - INFO - output dir for rank 0: ../log\hier_cls_exp1
+2026/04/11 22:50:32 - root - INFO - loading tokenizer from ../
+2026/04/11 22:50:32 - root - INFO - loading model from ../
+2026/04/11 22:50:33 - root - INFO - loading checkpoint from ../
+2026/04/11 22:50:33 - root - INFO - Loading data from data/hier_cls/train.json
+2026/04/11 22:50:33 - root - INFO - Tokenizing data and dump to data/hier_cls\tokenized_train.json
+2026/04/11 23:04:11 - root - INFO - output dir for rank 0: ../log\hier_cls_exp1
+2026/04/11 23:04:11 - root - INFO - loading tokenizer from ../
+2026/04/11 23:04:11 - root - INFO - loading model from ../
+2026/04/11 23:04:12 - root - INFO - loading checkpoint from ../
+2026/04/11 23:04:13 - root - INFO - Loading data from data/hier_cls/train.json
+2026/04/11 23:04:13 - root - INFO - Tokenizing data and dump to data/hier_cls\tokenized_train.json
+2026/04/11 23:04:13 - root - INFO - Load data number:0
+2026/04/11 23:04:13 - root - WARNING - rank 0 tokenizing done
+2026/04/11 23:04:13 - root - INFO - Merging tokenized data from each process !
+2026/04/11 23:04:13 - root - INFO - Merge Done and delete temp files!
+2026/04/11 23:04:15 - root - INFO - Loading data from data/hier_cls/dev.json
+2026/04/11 23:04:15 - root - INFO - data loading finished
+2026/04/11 23:04:15 - root - INFO - initializing trainer
+2026/04/11 23:09:41 - root - INFO - output dir for rank 0: ../log\hier_cls_exp1
+2026/04/11 23:09:41 - root - INFO - loading tokenizer from ../
+2026/04/11 23:09:41 - root - INFO - loading model from ../
+2026/04/11 23:09:41 - root - INFO - loading checkpoint from ../
+2026/04/11 23:09:42 - root - INFO - Loading data from data/hier_cls/train.json
+2026/04/11 23:09:42 - root - INFO - Tokenizing data and dump to data/hier_cls\tokenized_train.json
+2026/04/11 23:09:42 - root - INFO - Load data number:0
+2026/04/11 23:09:42 - root - WARNING - rank 0 tokenizing done
+2026/04/11 23:09:42 - root - INFO - Merging tokenized data from each process !
+2026/04/11 23:09:42 - root - INFO - Merge Done and delete temp files!
+2026/04/11 23:09:44 - root - INFO - Loading data from data/hier_cls/dev.json
+2026/04/11 23:09:44 - root - INFO - data loading finished
+2026/04/11 23:09:44 - root - INFO - initializing trainer
+2026/04/11 23:12:37 - root - INFO - ***** Running Test *****
+2026/04/11 23:12:37 - root - INFO -   Num examples = 110
+2026/04/11 23:12:37 - root - INFO -   Batch size = 8
+2026/04/11 23:12:42 - root - INFO - metric strict ...
+2026/04/11 23:12:42 - root - INFO - {'test_precision': 0.6818181818175619, 'test_recall': 0.6818181818175619, 'test_f1': 0.6818181817675619, 'test_pred_num': 110, 'test_gold_num': 110, 'test_correct_num': 75, 'test_runtime': 5.175, 'test_samples_per_second': 21.256, 'test_steps_per_second': 2.705}
+2026/04/11 23:12:42 - root - INFO - {'test_precision': 0.6818181818175619, 'test_recall': 0.6818181818175619, 'test_f1': 0.6818181817675619, 'test_pred_num': 110, 'test_gold_num': 110, 'test_correct_num': 75, 'test_runtime': 5.175, 'test_samples_per_second': 21.256, 'test_steps_per_second': 2.705}

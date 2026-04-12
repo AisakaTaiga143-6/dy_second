@@ -1,0 +1,1 @@
+{"framework":"pytorch","task":"rex-uninlu","pipeline":{"type":"nlp_deberta_rex-uninlu_chinese-base-pipe"},"allow_remote":true}
